@@ -1,3 +1,7 @@
+from collections import Counter
+from unicodedata import name
+
+
 # Задание 1
 # Дан список учеников, нужно посчитать количество повторений каждого имени ученика
 # Пример вывода:
@@ -14,8 +18,12 @@ students = [
 ]
 
 names_all = [students[i]['first_name'] for i in range(len(students))]
-for name in set(names_all):
-    print('{}: {}'.format(name, names_all.count(name)))    
+names_pepeats = Counter(names_all)
+for name in names_pepeats.keys():
+    print('{name}: {q_ty}'.format(
+        name=name, 
+        q_ty=names_pepeats[name]
+    ))
 
 
 # Задание 2
@@ -33,12 +41,8 @@ students = [
 
 def frequent_name(group):    
     names = [group[i]['first_name'] for i in range(len(group))]    
-    repeat = 0    
-    for name in set(names):        
-        if repeat < names.count(name):
-            repeat = names.count(name)
-            fr_name = name    
-    return fr_name
+    names_repeats = Counter(names).most_common()
+    return names_repeats[0][0]
 
 print('Most frequent name is {}'.format(frequent_name(students)))
 
@@ -66,8 +70,11 @@ school_students = [
     ],
 ]
 
-for ind, cls in enumerate(school_students):
-    print('Most frequent name in class {}: {}'.format(ind+1, frequent_name(cls)))
+for ind, cls in enumerate(school_students, start=1):
+    print('Most frequent name in class {number}: {name}'.format(
+        number=ind, 
+        name=frequent_name(cls)
+    ))
 
 
 # Задание 4
@@ -117,15 +124,36 @@ is_male = {
     'Миша': True,
 }
 
-for group in school:
-    boys = 0
-    girls = 0
+def count_boys(group):
+    boys = 0    
     for student in group['students']:
         if is_male[student['first_name']]:
-            boys += 1 
-        else: 
-            girls += 1
-    group['sex'] = 'boys' if boys > girls else 'girls'
+            boys += 1
+    return boys
 
+def count_girls(group):
+    girls = 0    
+    for student in group['students']:
+        if not is_male[student['first_name']]:
+            girls += 1
+    return girls
+    
+
+max_boys = (0, 0)
+max_girls = (0, 0)
+for group in school:    
+    boys = count_boys(group)
+    girls = count_girls(group)    
+    if max_boys[1] < boys:
+        max_boys = (group['class'], boys)
+
+    if max_girls[1] < girls:
+        max_girls = (group['class'], girls)
+
+print('Most of boys in class {}'.format(max_boys[0]))
+print('Most of girls in class {}'.format(max_girls[0]))
+
+'''
 for group in school:
-    print('Most of {} in class {}'.format(group['sex'], group['class']))
+    print('Most of {} in class {}'.format(group['gender'], group['class']))
+'''
