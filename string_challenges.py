@@ -1,7 +1,4 @@
 # Вывести последнюю букву в слове
-from itertools import count
-
-
 word = 'Архангельск'
 print(word[-1])
 
