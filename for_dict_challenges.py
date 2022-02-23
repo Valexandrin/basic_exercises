@@ -12,13 +12,17 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Петя'},
 ]
-# ???
+
+names_all = [students[i]['first_name'] for i in range(len(students))]
+for name in set(names_all):
+    print('{}: {}'.format(name, names_all.count(name)))    
 
 
 # Задание 2
 # Дан список учеников, нужно вывести самое часто повторящееся имя
 # Пример вывода:
 # Самое частое имя среди учеников: Маша
+
 students = [
     {'first_name': 'Вася'},
     {'first_name': 'Петя'},
@@ -26,7 +30,17 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Оля'},
 ]
-# ???
+
+def frequent_name(group):    
+    names = [group[i]['first_name'] for i in range(len(group))]    
+    repeat = 0    
+    for name in set(names):        
+        if repeat < names.count(name):
+            repeat = names.count(name)
+            fr_name = name    
+    return fr_name
+
+print('Most frequent name is {}'.format(frequent_name(students)))
 
 
 # Задание 3
@@ -51,7 +65,9 @@ school_students = [
         {'first_name': 'Саша'},
     ],
 ]
-# ???
+
+for ind, cls in enumerate(school_students):
+    print('Most frequent name in class {}: {}'.format(ind+1, frequent_name(cls)))
 
 
 # Задание 4
@@ -72,7 +88,16 @@ is_male = {
     'Миша': True,
     'Даша': False,
 }
-# ???
+
+for group in school:
+    boys = 0
+    girls = 0
+    for student in group['students']:
+        if is_male[student['first_name']]:
+            boys += 1 
+        else: 
+            girls += 1
+    print('In class {}: {} girls, {} boys'.format(group['class'], boys, girls))        
 
 
 # Задание 5
@@ -91,5 +116,16 @@ is_male = {
     'Олег': True,
     'Миша': True,
 }
-# ???
 
+for group in school:
+    boys = 0
+    girls = 0
+    for student in group['students']:
+        if is_male[student['first_name']]:
+            boys += 1 
+        else: 
+            girls += 1
+    group['sex'] = 'boys' if boys > girls else 'girls'
+
+for group in school:
+    print('Most of {} in class {}'.format(group['sex'], group['class']))
