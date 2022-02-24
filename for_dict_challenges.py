@@ -1,5 +1,4 @@
 from collections import Counter
-from unicodedata import name
 
 
 # Задание 1
@@ -124,26 +123,23 @@ is_male = {
     'Миша': True,
 }
 
-def count_boys(group):
-    boys = 0    
+def count_students(group):
+    boys = 0
+    girls = 0   
     for student in group['students']:
         if is_male[student['first_name']]:
             boys += 1
-    return boys
-
-def count_girls(group):
-    girls = 0    
-    for student in group['students']:
-        if not is_male[student['first_name']]:
+        else:
             girls += 1
-    return girls
-    
+    return boys, girls
+
 
 max_boys = (0, 0)
 max_girls = (0, 0)
 for group in school:    
-    boys = count_boys(group)
-    girls = count_girls(group)    
+    students = count_students(group)
+    boys = students[0]
+    girls = students[1]
     if max_boys[1] < boys:
         max_boys = (group['class'], boys)
 
@@ -152,8 +148,3 @@ for group in school:
 
 print('Most of boys in class {}'.format(max_boys[0]))
 print('Most of girls in class {}'.format(max_girls[0]))
-
-'''
-for group in school:
-    print('Most of {} in class {}'.format(group['gender'], group['class']))
-'''
